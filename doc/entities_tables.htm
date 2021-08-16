@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HELP</title>
+</head>
+<body>
+
+// ******************** CUSTOMERS ******************** //
+
+
+<br><hr>
+// ******************** PRODUCTS ********************* //
+
+<br><hr>
+// ******************** INVOICES ********************** //
+
+<br>
+/* HEADER */
+<br><hr>
+wp_posts => post_type = "shop_order" (post_status ['wc-completed'])
+<br>
+wp_postmeta
+<br>
+wp_wc_order_stats => order_id = wp_posts.ID
+<br><br>
+/* LINES */
+<br><hr>
+wp_woocommerce_order_items => order_id = wp_wc_order_stats.order_id
+<br>
+wp_woocommerce_order_itemmeta => order_item_id = wp_woocommerce_order_items.order_item_id
+
+</body>
+</html>

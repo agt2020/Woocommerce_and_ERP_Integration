@@ -1,0 +1,604 @@
+{
+	"info": {
+		"_postman_id": "33021c18-8780-4b87-94b8-de124158d51c",
+		"name": "ESales",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Shops",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/shops?withStores=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"shops"
+					],
+					"query": [
+						{
+							"key": "withStores",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"customers"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "nationalID",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "mobile",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "from",
+							"value": "",
+							"description": "from Index",
+							"disabled": true
+						},
+						{
+							"key": "numberOfRecords",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/customer?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"customer"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 19,\n    \"code\": 14,\n    \"gender\": \"male\",\n    \"firstName\": \"retail\",\n    \"lastName\": \"Api\",\n    \"nationalCode\": \"4640022115\",\n    \"birthdate\": \"07 May 1989\",\n    \"mobile\": \"09124573971\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/customer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Addresses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/Addresses?customerId=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"Addresses"
+					],
+					"query": [
+						{
+							"key": "customerId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Address",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"customerId\":6,\n    \"addressData\": {\n        \"id\": 0,\n        \"cityId\": 36,\n        \"name\": \"آدرس من\",\n        \"details\": \"asdfsdf\",\n        \"isDefault\": false\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/address",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteAddress",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"customerId\":6,\n    \"addressData\": {\n        \"id\": 0,\n        \"cityId\": 36,\n        \"name\": \"آدرس من\",\n        \"details\": \"asdfsdf\",\n        \"isDefault\": false\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/address?id=11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"address"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "11"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Retail/eSalesApi/ESalesService.svc/products?storeId=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Retail",
+						"eSalesApi",
+						"ESalesService.svc",
+						"products"
+					],
+					"query": [
+						{
+							"key": "storeId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Places",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/places",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"places"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Place",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/place?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"place"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remaining",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": 3,\n    \"storeId\": 2,\n    \"trackingFactors\": [\n        {\n            \"Id\": 24,\n            \"Value\": \"2019/05/13\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/remaining",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"remaining"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Price",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": 8,\n    \"unitId\": 11,\n    \"customerId\": 1,\n    \"retailShopId\": 12,\n    \"trackingFactors\": [\n        {\n            \"Id\": 24,\n            \"Value\": \"2019/05/13\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/price",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"price"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoices",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/invoices?customerId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"invoices"
+					],
+					"query": [
+						{
+							"key": "customerId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/invoice?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"invoice"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"document\": {\n        \"customerId\": 1,\n        \"currencyId\": 1,\n        \"settlementPolicyId\": 5,\n        \"storeId\": 2,\n        \"documentPatternId\": 4,\n        \"items\": [\n            {\n                \"productId\": 3,\n                \"unitId\": 1,\n                \"quantity\": 3,\n                \"storeId\": 2,\n                \"fee\": 180000\n            }\n        ]\n    },\n    \"payments\": [\n        {\n            \"key\": \"Cash\",\n            \"amount\": 286000\n        },\n        {\n            \"key\": \"Cash\",\n            \"amount\": 100000\n        },\n        {\n            \"key\": \"EReceipt\",\n            \"amount\": 100000,\n            \"attr\": {\n                \"date\": \"2019-02-26\",\n                \"transactionNumber\": \"64641631\",\n                \"trackingNumber\": \"2343\"\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/Invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"Invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Policy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"document\": {\n        \"customerId\": 2,\n        \"currencyId\": 1,\n        \"settlementPolicyId\": 5,\n        \"storeId\": 10,\n        \"documentPatternId\": 4,\n        \"items\": [\n            {\n                \"productId\": 8,\n                \"unitId\": 2,\n                \"quantity\": 3,\n                \"storeId\": 10,\n                \"fee\": 100000\n            }\n        ]\n    },\n    \"discountCardSerials\": []\n}"
+				},
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Retail/eSalesApi/ESalesService.svc/policy",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Retail",
+						"eSalesApi",
+						"ESalesService.svc",
+						"policy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Coupon",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Retail/eSalesApi/ESalesService.svc/coupon?serial=132",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Retail",
+						"eSalesApi",
+						"ESalesService.svc",
+						"coupon"
+					],
+					"query": [
+						{
+							"key": "serial",
+							"value": "132"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DiscountCard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Retail/eSalesApi/ESalesService.svc/discountCard?serial=244",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Retail",
+						"eSalesApi",
+						"ESalesService.svc",
+						"discountCard"
+					],
+					"query": [
+						{
+							"key": "serial",
+							"value": "244"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SettlementPolicy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Rms9Dfc/Services/Retail/ESales.svc/settlement?id=37",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Rms9Dfc",
+						"Services",
+						"Retail",
+						"ESales.svc",
+						"settlement"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "37"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
