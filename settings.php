@@ -155,7 +155,7 @@
                   </div>
                   <div class="form-group">
                     <label for="cashiename">محصولات سینک شده</label>
-                    <input type="text" class="form-control" name="lastFetchedPage" id="lastFetchedPage" placeholder="محصولات سینک شده" value="<?php echo $Config['Invoice']['lastFetchedPage'] ; ?>">
+                    <input type="text" class="form-control" name="lastFetchedPage" id="lastFetchedPage" placeholder="محصولات سینک شده" value="<?php echo $Config['Product']['lastFetchedPage'] ; ?>">
                     <small id="emailHelp" class="form-text text-muted">محصولات تا این تعداد سینک شده اند</small>
                   </div>
                   <!--<div class="form-group form-check">
