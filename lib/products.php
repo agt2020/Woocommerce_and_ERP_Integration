@@ -122,8 +122,8 @@
 		// CREATE DB CONNECTION
 		$db = new DB();
 		// MAKE RAHKARAN CLASS OBJECT
-	    	$Rah = new Rahkaran();
-		
+	    $Rah = new Rahkaran();
+      
 		$query = 'SELECT product_id,sg_id FROM sg_products_metadata WHERE sg_id IS NOT NULL ORDER BY sg_id DESC LIMIT '.$Offset.', '.$Limit;
 		if($product_id != null)
 		{
@@ -135,7 +135,7 @@
 			while($row = $result->fetch_assoc())
 			{
 				$Content = $Rah->Get_Products_Remaining($row['sg_id'], 3);
-				if ($Content['result'] == true || $Content['result'] == 1)
+				if ($Content['result'] == true)
 				{
 					Update_Product_Meta($row['product_id'],'_stock',(string)$Content['data'].".000000");
 					if ($Content['data'] > 0)
@@ -190,6 +190,7 @@
 			}
 		}
 		$result = $Rah->Get_Products_Price($items);
+      	print_r($result);
 		if(sizeof($result['data']))
 		{
 			foreach($result['data'] as $key => $value)

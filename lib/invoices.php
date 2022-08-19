@@ -28,9 +28,10 @@
 		$inv = $inv['id'];
 	    	//
 	    	$ids = '';
-	    	$keys = array('_variation_id' => 'p_id','_qty' => 'quantity','_line_subtotal' => 'fee');
-		$sql = "SELECT id AS order_id, `date` AS date_created, customer_id, shipping AS shipping_total, gross_total FROM sg_invoices WHERE sg_id IS NULL AND `date` >= '2021-06-10 00:00:00'";
-		$result = $db->conn->query($sql);
+	    	$keys = array('_variation_id' => 'p_id','_qty' => 'quantity','_line_total' => 'fee');
+		$sql = "SELECT id AS order_id, date AS date_created, customer_id, shipping AS shipping_total, gross_total FROM sg_invoices WHERE sg_id IS NULL AND date >= '2022-03-21 00:00:00'";
+		//$sql = "SELECT id AS order_id, date AS date_created, customer_id, shipping AS shipping_total, gross_total FROM sg_invoices WHERE sg_id IS NULL AND (description = '' OR description IS NULL) ORDER BY date DESC LIMIT 0,10";	
+        	$result = $db->conn->query($sql);
 		if ($result->num_rows > 0)
 		{
 			$temp_invoices = array();
@@ -41,7 +42,7 @@
 					$row['storeId'] = $inv;
 					$row['currencyId'] = 1;
 					$row['settlementPolicyId'] = 4;
-		    		$row['documentPatternId'] = 5;
+		    			$row['documentPatternId'] = 5;
 					// CUSTOMER ID
 					$sql_customer = "SELECT sg_id FROM sg_customers WHERE id ='".$row['customer_id']."'";
 					$result_customer = $db->conn->query($sql_customer);
@@ -137,19 +138,19 @@
 
     			foreach ($Invoice as $key => $value)
     			{
-	            		if ($key == 'items')
-	            		{
-	            			foreach ($value as $k => $v)
-	            			{
-	            				$q = 'SELECT meta_value AS site_price FROM wp_postmeta WHERE meta_key = "_regular_price" AND post_id = "'.$v['p_id'].'"';
-	            				$re = $db->conn->query($q);
-						$ro = $re->fetch_assoc();
-						$ro['site_price'] = $ro['site_price'];
-						$Invoice[$key][$k]['site_price'] = (int)$ro['site_price']*(int)$v['quantity'];
-						$v['cashierDiscount'] = $Invoice[$key][$k]['site_price']-(int)$v['fee'];
-						$Invoice[$key][$k]['cashierDiscount'] = $v['cashierDiscount'];
-    					}
-    				}
+                  if ($key == 'items')
+                  {
+                    foreach ($value as $k => $v)
+                    {
+                      $q = 'SELECT meta_value AS site_price FROM wp_postmeta WHERE meta_key = "_regular_price" AND post_id = "'.$v['p_id'].'"';
+                      $re = $db->conn->query($q);
+                      $ro = $re->fetch_assoc();
+                      $ro['site_price'] = $ro['site_price'];
+                      $Invoice[$key][$k]['site_price'] = (int)$ro['site_price']*(int)$v['quantity'];
+                      $v['cashierDiscount'] = $Invoice[$key][$k]['site_price']-(int)$v['fee'];
+                      $Invoice[$key][$k]['cashierDiscount'] = $v['cashierDiscount'];
+                    }
+                  }
     			}
 	            	// SHIPPING
 	            	if ($Invoice['shipping_total'] != '' && $Invoice['shipping_total'] != 0)
@@ -160,23 +161,29 @@
 	            			array_push($Invoice['items'], $ship);
 	            		}
 			}
-			print_r($Invoice);
-			echo '<br>===================================================<br>';
+          	/*if($Invoice['order_id'] != 38175)
+            {
+              return false;
+            }*/
+			//print_r($Invoice);
+			//echo '<br>===================================================<br>';
 			// INSERT    
 			$response = $Rah->Post_Invoice($Invoice);
-			print_r($response);
-			echo '<br>+++++++++++++++++++++++++++++++++++++++++++++++++++<br>';
+			//print_r($response);
+			//echo '<br>+++++++++++++++++++++++++++++++++++++++++++++++++++<br>';
         		if ($response['result'] && $response['data'] != '')
         		{
             			$q = 'UPDATE sg_invoices SET description = "Done", sg_id = "'.$response['data'].'" WHERE id = "'.$Invoice['order_id'].'"';
+                  		echo '<br>==='.$q.'===<br>';
             			$db->conn->query($q);
             			return true;
         		}
         		else
         		{
             			$q = 'UPDATE sg_invoices SET description = "'.$response['data'].'" WHERE id = "'.$Invoice['order_id'].'"';
+                  		echo '<br>==='.$q.'===<br>';
             			$db->conn->query($q);
-        			return false;
+        				return false;
         		}
 		}
 		return false;
@@ -198,25 +205,29 @@
 	function Shipping_Item($fee)
 	{
 		$item = array();
-		if ($fee == 0)
+		$shippingPrice = ShippingPrice();
+		if(is_array($shippingPrice) && !empty($shippingPrice))
 		{
-			$item['productId'] = 6519;
-		}
-		elseif($fee == 13000)
-		{
-			$item['productId'] = 6520;
-		}
-		elseif($fee == 14000)
-		{
-			$item['productId'] = 11063;
-		}
-		elseif($fee == 15000)
-		{
-			$item['productId'] = 43519;
-		}
-		elseif($fee == 16000)
-		{
-			$item['productId'] = 6522;
+			if ($fee == $shippingPrice['freeFee'])
+			{
+				$item['productId'] = $shippingPrice['freeProductID'];
+			}
+			elseif($fee == $shippingPrice['peykTehranFee'])
+			{
+				$item['productId'] = $shippingPrice['peykTehranProductID'];
+			}
+			elseif($fee == $shippingPrice['postOtherFee'])
+			{
+				$item['productId'] = $shippingPrice['postOtherProductID'];
+			}
+			elseif($fee == $shippingPrice['postTehranFee'])
+			{
+				$item['productId'] = $shippingPrice['postTehranProductID'];
+			}
+			else
+			{
+				return $item;
+			}
 		}
 		else
 		{
@@ -238,7 +249,7 @@
 		//
 	    	$query = "SELECT order_id AS ID, date_created AS `date`, customer_id, shipping_total AS shipping, gross_total
 		    	  FROM vw_sg_invoices
-		    	  WHERE `status` = 'wc-processing' AND date_created >= '2021-06-10 00:00:00'";
+		    	  WHERE (`status` = 'wc-processing' OR `status` = 'wc-orders_edgham') AND date_created >= '2022-06-01 12:00:00'";
 		$res = $db->conn->query($query);
 		while ($row = $res->fetch_assoc())
 		{
@@ -272,9 +283,28 @@
 			foreach ($Invoices as $key => $value)
 			{
 				$query = 'UPDATE sg_invoices SET `date` = "'.$value['date'].'", customer_id = '.$value['customer_id'].', shipping = '.$value['shipping'].', gross_total= '.$value['gross_total'].' WHERE id = '.$key;
-				$db->conn->query($query);
+              	$db->conn->query($query);
 			}
 		}
 		return true;
+	}
+
+	// GET SHIPPING PRICE
+	function ShippingPrice()
+	{
+		// CREATE DB CONNECTION
+		$db = new DB();
+		$ShippingPrice = array();
+		// FETCH BY STORES
+		$query = 'SELECT name,value FROM sg_config WHERE category = "Shipping"';
+		$result = $db->conn->query($query);
+		if ($result->num_rows > 0)
+		{
+			while($row = $result->fetch_assoc())
+			{
+				$ShippingPrice[$row['name']] = $row['value'];
+			}
+		}
+		return $ShippingPrice;
 	}
 ?>

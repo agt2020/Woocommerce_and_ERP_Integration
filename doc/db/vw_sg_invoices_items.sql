@@ -31,12 +31,6 @@ SET time_zone = "+00:00";
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_sg_invoices_items`  AS  select `i`.`order_id` AS `order_id`,`i`.`order_item_id` AS `order_item_id`,`i`.`order_item_name` AS `order_item_name`,`i`.`order_item_type` AS `order_item_type`,`m`.`meta_key` AS `meta_key`,`m`.`meta_value` AS `meta_value` from (`wp_woocommerce_order_items` `i` left join `wp_woocommerce_order_itemmeta` `m` on((`i`.`order_item_id` = `m`.`order_item_id`))) where ((`m`.`meta_key` = '_line_subtotal') or (`m`.`meta_key` = '_qty') or (`m`.`meta_key` = '_variation_id')) ;
 COMMIT;
 
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`rt_rt`@`localhost` SQL SECURITY DEFINER VIEW `vw_sg_invoices_items`  AS  select `i`.`order_id` AS `order_id`,`i`.`order_item_id` AS `order_item_id`,`i`.`order_item_name` AS `order_item_name`,`i`.`order_item_type` AS `order_item_type`,`m`.`meta_key` AS `meta_key`,`m`.`meta_value` AS `meta_value` from (`wp_woocommerce_order_items` `i` left join `wp_woocommerce_order_itemmeta` `m` on(`i`.`order_item_id` = `m`.`order_item_id`)) where `m`.`meta_key` = '_line_subtotal' or `m`.`meta_key` = '_qty' or `m`.`meta_key` = '_variation_id' ;
-COMMIT;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`rt_rt`@`localhost` SQL SECURITY DEFINER VIEW `vw_sg_invoices_items`  AS  select `i`.`order_id` AS `order_id`,`i`.`order_item_id` AS `order_item_id`,`i`.`order_item_name` AS `order_item_name`,`i`.`order_item_type` AS `order_item_type`,`m`.`meta_key` AS `meta_key`,`m`.`meta_value` AS `meta_value` from (`wp_woocommerce_order_items` `i` left join `wp_woocommerce_order_itemmeta` `m` on(`i`.`order_item_id` = `m`.`order_item_id`)) where `m`.`meta_key` = '_line_total' or `m`.`meta_key` = '_qty' or `m`.`meta_key` = '_variation_id' ;
-COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

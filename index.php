@@ -167,6 +167,10 @@
                         {
                           foreach ($inventories as $key => $value)
                           {
+                          	if($value['is_default'])
+                            {
+                              $value['is_default'] = '<span data-feather="plus-circle"></span>';
+                            }
                             echo "<tr>
                                   <td>".$value['id']."</td>
                                   <td>".$value['name']."</td>

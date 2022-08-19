@@ -9,19 +9,19 @@
 	************************************/
 	require_once ('lib/products.php');
 	if($_REQUEST['offset'] == '' && $_REQUEST['limit'] == '')
-	{
+    {
 		$_REQUEST['offset'] = 0;
-		$_REQUEST['limit'] = 1000;
-	}
+      	$_REQUEST['limit'] = 1000;
+    }
 
 	if($_REQUEST['product_id'] != '')
-	{
-		Products_Remaining($_REQUEST['product_id'], 0, 1);
-	}
+    {
+     	Products_Remaining($_REQUEST['product_id'], 0, 1);
+    }
 	else
-	{
+    {
 		Products_Remaining(null, $_REQUEST['offset'], $_REQUEST['limit']);
-	}
+    }
 	header('Location: products.php');
 	exit;
 ?>

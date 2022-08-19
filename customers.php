@@ -27,7 +27,16 @@
 		unset($_SESSION['sg_session_id']);
 		header('location: login.php');
 		die();
-  }
+	}
+
+if(!empty($_REQUEST['limit']) && is_numeric($_REQUEST['limit']))
+{
+  $reqLimit = $_REQUEST['limit'];
+}
+else
+{
+  $reqLimit = 200;
+}
 ?>
 
 <!doctype html>
@@ -148,6 +157,20 @@
 
           <!-- 	<canvas class="my-4" id="myChart" width="900" height="380"></canvas> -->
           <div class="row">
+          <div class="col-md-12">
+              <div class="form-group">
+                <label for="limit">تعداد مشتریان: </label>
+                <select class="form-control" id="limit" onchange="Limit();">
+                  <option value="200" <?php echo ($reqLimit == 200) ? 'selected' : '' ; ?>>200 مشتری آخر</option>
+                  <option value="400" <?php echo ($reqLimit == 400) ? 'selected' : '' ; ?>>400 مشتری آخر</option>
+                  <option value="800" <?php echo ($reqLimit == 800) ? 'selected' : '' ; ?>>800 مشتری آخر</option>
+                  <option value="1000" <?php echo ($reqLimit == 1000) ? 'selected' : '' ; ?>>1000 مشتری آخر</option>
+                  <option value="2000" <?php echo ($reqLimit == 2000) ? 'selected' : '' ; ?>>2000 مشتری آخر</option>
+                  <option value="5000" <?php echo ($reqLimit == 5000) ? 'selected' : '' ; ?>>5000 مشتری آخر</option>
+                  <option value="-1" <?php echo ($reqLimit == -1) ? 'selected' : '' ; ?>>همه مشتریان</option>
+                </select>
+              </div>
+            </div>
             <div class="col-md-12">
               <h4>وضعیت مشتریان</h4>
                 <div class="table-responsive">
@@ -164,7 +187,7 @@
                     </thead>
                     <tbody>
                       <?php
-                        $Customer_Status = Customer_Status();
+                        $Customer_Status = Customer_Status($reqLimit);
                         if (sizeof($Customer_Status))
                         {
                           foreach ($Customer_Status as $key => $value)
@@ -202,7 +225,7 @@
         </main>
       </div>
     </div>
-    <!-- Manual Synch Modal -->
+	<!-- Manual Synch Modal -->
     <div class="modal fade" id="manualSynchModal" tabindex="-1" role="dialog" aria-labelledby="manualSynchModal" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -245,6 +268,10 @@
     <!-- DataTable Core JavaScript -->
     <script src="js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
+      function Limit()
+      {
+        location.replace("customers.php?limit="+$('#limit').val());
+      }
       $(document).ready(function(){
         $('#customers_status_table').show();
         var table = $('#customers_status_table').DataTable({

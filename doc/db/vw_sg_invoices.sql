@@ -28,11 +28,9 @@ SET time_zone = "+00:00";
 -- Structure for view `vw_sg_invoices`
 --
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`rt_rt`@`localhost` SQL SECURITY DEFINER VIEW `vw_sg_invoices`  AS  select `s`.`order_id` AS `order_id`,`s`.`date_created` AS `date_created`,`s`.`num_items_sold` AS `num_items_sold`,`s`.`net_total` AS `gross_total`,`s`.`shipping_total` AS `shipping_total`,`s`.`net_total` AS `net_total`,`s`.`status` AS `status`,`m`.`meta_value` AS `customer_id` from (`wp_wc_order_stats` `s` left join `wp_postmeta` `m` on((`s`.`order_id` = `m`.`post_id`))) where (`m`.`meta_key` = '_customer_user') order by `s`.`order_id` desc ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_sg_invoices`  AS  select `s`.`order_id` AS `order_id`,`s`.`date_created` AS `date_created`,`s`.`num_items_sold` AS `num_items_sold`,`s`.`gross_total` AS `gross_total`,`s`.`shipping_total` AS `shipping_total`,`s`.`net_total` AS `net_total`,`s`.`status` AS `status`,`m`.`meta_value` AS `customer_id` from (`wp_wc_order_stats` `s` left join `wp_postmeta` `m` on((`s`.`order_id` = `m`.`post_id`))) where (`m`.`meta_key` = '_customer_user') order by `s`.`order_id` desc ;
 COMMIT;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`rt_rt`@`localhost` SQL SECURITY DEFINER VIEW `vw_sg_invoices`  AS  select `s`.`order_id` AS `order_id`,`s`.`date_created` AS `date_created`,`s`.`num_items_sold` AS `num_items_sold`,`s`.`net_total` AS `gross_total`,`s`.`shipping_total` AS `shipping_total`,`s`.`net_total` AS `net_total`,`s`.`status` AS `status`,`m`.`meta_value` AS `customer_id` from (`wp_wc_order_stats` `s` left join `wp_postmeta` `m` on(`s`.`order_id` = `m`.`post_id`)) where `m`.`meta_key` = '_customer_user' order by `s`.`order_id` desc ;
-COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

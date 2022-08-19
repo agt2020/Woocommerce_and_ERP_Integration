@@ -16,7 +16,8 @@
 	}
 
 	require_once ('lib/utils.php');
-  require_once ('lib/invoices.php');
+  	require_once ('lib/invoices.php');
+	include_once ('lib/PersianCalendar.php');
 
 	$company_name = 'فروشگاه RT';
 
@@ -27,6 +28,19 @@
 		header('location: login.php');
 		die();
 	}
+
+if(!empty($_REQUEST['duration']) && is_numeric($_REQUEST['duration']))
+{
+  $reqLimit = $_REQUEST['duration'];
+  if($reqLimit < 0 || $_REQUEST['duration'] > 5)
+  {
+    $reqLimit = 0;
+  }
+}
+else
+{
+  $reqLimit = 0;
+}
 ?>
 
 <!doctype html>
@@ -135,7 +149,7 @@
             <h1 class="h2">مدیریت فاکتورها</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group mr-2">
-                <a href="insert_invoice_manual.php" class="btn btn-sm btn-info btn-sync">انتقال به راهکاران</a>
+              	<a href="insert_invoice_manual.php" class="btn btn-sm btn-info btn-sync">انتقال به راهکاران</a>
               </div>
               <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
                 <span data-feather="calendar"></span>
@@ -146,6 +160,20 @@
 
           <!-- 	<canvas class="my-4" id="myChart" width="900" height="380"></canvas> -->
           <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="duration">بازه زمانی : </label>
+                <select class="form-control" id="duration" onchange="Duration();">
+                  <option value="0" <?php echo ($reqLimit == 0) ? 'selected' : '' ; ?>>یک هفته گذشته</option>
+                  <option value="1" <?php echo ($reqLimit == 1) ? 'selected' : '' ; ?>>دو هفته گذشته</option>
+                  <option value="2" <?php echo ($reqLimit == 2) ? 'selected' : '' ; ?>>یک ماه گذشته</option>
+                  <option value="3" <?php echo ($reqLimit == 3) ? 'selected' : '' ; ?>>سه ماه گذشته</option>
+                  <option value="4" <?php echo ($reqLimit == 4) ? 'selected' : '' ; ?>>شش ماه گذشته</option>
+                  <option value="5" <?php echo ($reqLimit == 5) ? 'selected' : '' ; ?>>یک سال گذشته</option>
+                  <option value="6" <?php echo ($reqLimit == 6) ? 'selected' : '' ; ?>>دو سال گذشته</option>
+                </select>
+              </div>
+            </div>
             <div class="col-md-12">
               <h4>وضعیت فاکتورها</h4>
                 <div class="table-responsive">
@@ -161,17 +189,23 @@
                     </thead>
                     <tbody>
                       <?php
-                        $Invoice_Status = Invoice_Status();
+                        $Invoice_Status = Invoice_Status($reqLimit);
                         if (sizeof($Invoice_Status))
                         {
                           foreach ($Invoice_Status as $key => $value)
                           {
+                            $date = date('Y-m-d H:i', strtotime('+3 hour +30 minutes', strtotime($value['date'])));
+                            $date = explode(' ',$date);
+                            $time = $date[1];
+                            $date = explode('-',$date[0]);
+                            $DATE_J = gregorian_to_mds($date[0],$date[1],$date[2]);
+										        $shamsi = $DATE_J[0].'/'.$DATE_J[1].'/'.$DATE_J[2].' '.$time;
                             echo "<tr>
                                   <td style='text-align:center;'>".$value['id']."</td>
                                   <td style='direction:rtl;text-align:center;'>".$value['description']."</td>
                                   <td style='text-align:center;'>".$value['sg_id']."</td>
                                   <td style='text-align:center;'>".$value['customer_id']."</td>
-                                  <td style='direction:ltr;text-align:center;'>".$value['date']."</td>
+                                  <td style='direction:ltr;text-align:center;'>".$shamsi."</td>
                                 </tr>";
                           }
                         }
@@ -204,6 +238,10 @@
     <!-- DataTable Core JavaScript -->
     <script src="js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
+      function Duration()
+      {
+        location.replace("invoices.php?duration="+$('#duration').val());
+      }
       $(document).ready(function(){
         $('#invoices_status_table').show();
         var table = $('#invoices_status_table').DataTable({

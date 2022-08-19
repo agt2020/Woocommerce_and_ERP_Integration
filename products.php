@@ -27,6 +27,15 @@
 		header('location: login.php');
 		die();
 	}
+
+if(!empty($_REQUEST['limit']) && is_numeric($_REQUEST['limit']))
+{
+  $reqLimit = $_REQUEST['limit'];
+}
+else
+{
+  $reqLimit = 100;
+}
 ?>
 
 <!doctype html>
@@ -155,9 +164,23 @@
 
           <!-- 	<canvas class="my-4" id="myChart" width="900" height="380"></canvas> -->
           <div class="row">
+          <div class="col-md-12">
+              <div class="form-group">
+                <label for="limit">تعداد محصولات: </label>
+                <select class="form-control" id="limit" onchange="Limit();">
+                  <option value="100" <?php echo ($reqLimit == 100) ? 'selected' : '' ; ?>>100 محصول آخر</option>
+                  <option value="200" <?php echo ($reqLimit == 200) ? 'selected' : '' ; ?>>200 محصول آخر</option>
+                  <option value="500" <?php echo ($reqLimit == 500) ? 'selected' : '' ; ?>>500 محصول آخر</option>
+                  <option value="1000" <?php echo ($reqLimit == 1000) ? 'selected' : '' ; ?>>1000 محصول آخر</option>
+                  <option value="2000" <?php echo ($reqLimit == 2000) ? 'selected' : '' ; ?>>2000 محصول آخر</option>
+                  <option value="5000" <?php echo ($reqLimit == 5000) ? 'selected' : '' ; ?>>5000 محصول آخر</option>
+                  <option value="-1" <?php echo ($reqLimit == -1) ? 'selected' : '' ; ?>>همه محصولات</option>
+                </select>
+              </div>
+            </div>
             <div class="col-md-12">
               <?php
-                $Products_List = Products_List();
+                $Products_List = Products_List($reqLimit);
               ?>
               <h4>لیست محصولات (تعداد : <?php echo sizeof($Products_List); ?>)</h4>
                 <div class="table-responsive">
@@ -249,6 +272,10 @@
     <!-- DataTable Core JavaScript -->
     <script src="js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
+      function Limit()
+      {
+        location.replace("products.php?limit="+$('#limit').val());
+      }
       $(document).ready(function(){
         $('#products_table').show();
         var table = $('#products_table').DataTable({

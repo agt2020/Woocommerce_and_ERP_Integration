@@ -347,19 +347,19 @@
 				        $Item['unitId'] = $value['unitId'];
 				        $Item['quantity'] = $value['quantity'];
 				        $Item['storeId'] = $data['storeId'];
-				        $Item['fee'] = 0;
+				        $Item['fee'] = $value['site_price']*10;
 				        $Item['cashierDiscount'] = (int)$value['cashierDiscount']*10;
 					array_push($Items, $Item);
 				}
 			}
 			// MAIN BODY
-			$Invoice['datetime'] = $data['datetime'];
+			//$Invoice['datetime'] = $data['datetime'];
 			$Invoice['customerId'] = (int)$data['customerId'];
 			$Invoice['currencyId'] = $data['currencyId'];
 			$Invoice['storeId'] = $data['storeId'];
 			$Invoice['settlementPolicyId'] = $data['settlementPolicyId'];
 			$Invoice['documentPatternId'] = $data['documentPatternId'];
-			$Invoice['cashierDiscount'] = 0;
+			//$Invoice['cashierDiscount'] = 0;
 			$Invoice['items'] = $Items;
 		    	try
 			{
@@ -377,7 +377,7 @@
 					// INSERT INVOICE
 					$payments[0]["key"] = "Cash";
 					$payments[0]["amount"] = ((int)$data['gross_total']*10);
-					$payments[0]["attr"] = (object)array();
+                  	//$payments[0]["attr"] = (object)array();
 					$body = array(
 						"document" => $Invoice,
 						"payments" => $payments,

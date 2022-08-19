@@ -27,11 +27,51 @@
 		die();
 	}
 	
-	if(sizeof($_POST))
-	{
-		Save_Config('Invoice','cashiername',$_POST['cashiername']);
-    Save_Config('Product','lastFetchedPage',$_POST['lastFetchedPage']);
-	}
+		if(sizeof($_POST))
+        {
+            // INVOICE SETTINGs
+            if($_POST['cashiername'] != '')
+            {
+              Save_Config('Invoice','cashiername',$_POST['cashiername']);
+            }
+            if($_POST['lastFetchedPage'] != '')
+            {
+              Save_Config('Product','lastFetchedPage',$_POST['lastFetchedPage']);
+            }
+            // SHIPPING SETTINGS
+            if($_POST['freeFee'] != '')
+            {
+              Save_Config('Shipping','freeFee',$_POST['freeFee']);
+            }
+            if($_POST['freeProductID'] != '')
+            {
+              Save_Config('Shipping','freeProductID',$_POST['freeProductID']);
+            }
+            if($_POST['peykTehranFee'] != '')
+            {
+              Save_Config('Shipping','peykTehranFee',$_POST['peykTehranFee']);
+            }
+            if($_POST['peykTehranProductID'] != '')
+            {
+              Save_Config('Shipping','peykTehranProductID',$_POST['peykTehranProductID']);
+            }
+            if($_POST['postTehranFee'] != '')
+            {
+              Save_Config('Shipping','postTehranFee',$_POST['postTehranFee']);
+            }
+            if($_POST['postTehranProductID'] != '')
+            {
+              Save_Config('Shipping','postTehranProductID',$_POST['postTehranProductID']);
+            }
+            if($_POST['postOtherFee'] != '')
+            {
+              Save_Config('Shipping','postOtherFee',$_POST['postOtherFee']);
+            }
+            if($_POST['postOtherProductID'] != '')
+            {
+              Save_Config('Shipping','postOtherProductID',$_POST['postOtherProductID']);
+            }
+        }
     
     // LOAD CONFIG	
 	$Config = Config();
@@ -143,32 +183,73 @@
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
             <h1 class="h2">تنظیمات</h1>
           </div>
-
-          <!-- 	<canvas class="my-4" id="myChart" width="900" height="380"></canvas> -->
-          <div class="row">
-            <div class="col-md-6">
-                <form method="POST" action="settings.php">
-                  <div class="form-group">
-                    <label for="cashiename">نام صندوق فروشگاه</label>
-                    <input type="text" class="form-control" name="cashiername" id="cashiername" placeholder="نام صندوق" value="<?php echo $Config['Invoice']['cashiername'] ; ?>">
-                    <small id="emailHelp" class="form-text text-muted">نام صندوقی که فاکتور های سایت با آن ثبت می شود.</small>
-                  </div>
-                  <div class="form-group">
-                    <label for="cashiename">محصولات سینک شده</label>
-                    <input type="text" class="form-control" name="lastFetchedPage" id="lastFetchedPage" placeholder="محصولات سینک شده" value="<?php echo $Config['Product']['lastFetchedPage'] ; ?>">
-                    <small id="emailHelp" class="form-text text-muted">محصولات تا این تعداد سینک شده اند</small>
-                  </div>
-                  <!--<div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                  </div>-->
-                  <button type="submit" class="btn btn-primary">ذخیره</button>
-                </form>
+          <form method="POST" action="settings.php">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="cashiename">نام صندوق فروشگاه</label>
+                  <input type="text" class="form-control" name="cashiername" id="cashiername" placeholder="نام صندوق" value="<?php echo $Config['Invoice']['cashiername'] ; ?>">
+                  <small id="emailHelp" class="form-text text-muted">نام صندوقی که فاکتور های سایت با آن ثبت می شود.</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="cashiename">محصولات سینک شده</label>
+                  <input type="text" class="form-control" name="lastFetchedPage" id="lastFetchedPage" placeholder="محصولات سینک شده" value="<?php echo $Config['Product']['lastFetchedPage'] ; ?>">
+                  <small id="emailHelp" class="form-text text-muted">محصولات تا این تعداد سینک شده اند</small>
+                </div>
+              </div>
             </div>
-            <div class="col-md-6">
-
+            <div class="row">
+              <div class="col-md-12">
+              <div class="form-group">
+                  <label for="cashiename">اعلامیه قیمت حمل</label>
+                  <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">عنوان</th>
+                        <th scope="col">شناسه محصول</th>
+                        <th scope="col">هزینه ارسال</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>ارسال رایگان</td>
+                        <td><input type="number" class="form-control" name="freeProductID" value="<?php echo $Config['Shipping']['freeProductID'] ; ?>"></td>
+                        <td><input type="number" class="form-control" name="freeFee" value="<?php echo $Config['Shipping']['freeFee'] ; ?>"></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>ارسال با پیک تهران</td>
+                        <td><input type="number" class="form-control" name="peykTehranProductID" value="<?php echo $Config['Shipping']['peykTehranProductID'] ; ?>"></td>
+                        <td><input type="number" class="form-control" name="peykTehranFee" value="<?php echo $Config['Shipping']['peykTehranFee'] ; ?>"></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>ارسال با پست تهران</td>
+                        <td><input type="number" class="form-control" name="postTehranProductID" value="<?php echo $Config['Shipping']['postTehranProductID'] ; ?>"></td>
+                        <td><input type="number" class="form-control" name="postTehranFee" value="<?php echo $Config['Shipping']['postTehranFee'] ; ?>"></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">4</th>
+                        <td>ارسال با پست شهرستان</td>
+                        <td><input type="number" class="form-control" name="postOtherProductID" value="<?php echo $Config['Shipping']['postOtherProductID'] ; ?>"></td>
+                        <td><input type="number" class="form-control" name="postOtherFee" value="<?php echo $Config['Shipping']['postOtherFee'] ; ?>"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <small id="emailHelp" class="form-text text-muted">شناسه حمل و قیمت ها(تومان) را در جدول فوق وارد نمایید</small>
+                </div>
+              </div>
             </div>
-          </div>
+            <div class="row">
+              <div class="col-md-6">
+                <button type="submit" class="btn btn-primary">ذخیره</button>
+              </div>
+            </div>
+          </form>
         </main>
       </div>
     </div>

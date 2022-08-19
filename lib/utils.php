@@ -48,14 +48,18 @@
 	}
 
 	// GET CUSTOMER STATUS FROM SG_CUSTOMERS
-	function Customer_Status()
+	function Customer_Status($limit = 200)
 	{
 		// CREATE DB CONNECTION
 		$db = new DB();
 		$Customers = array();
 		$Description = array('Done'=>'منتقل شده','incomplete'=>'نقص اطلاعات','Failed_To_Connect'=>'ناموق در ثبت (عدم ارتباط با سرور راهکاران)');
 		// FETCH BY STORES
-		$query = 'SELECT * FROM sg_customers';
+		$query = 'SELECT id,CAST(sg_id as INT) AS sg_id,description,date FROM sg_customers ORDER BY sg_id DESC LIMIT 0,'.$limit;
+		if($limit < 0)
+		{
+			$query = 'SELECT id,CAST(sg_id as INT) AS sg_id,description,date FROM sg_customers ORDER BY sg_id DESC';
+		}
 		$result = $db->conn->query($query);
 		if ($result->num_rows > 0)
 		{
@@ -114,14 +118,23 @@
 	}
 
 	// GET INVOICE STATUS FROM SG_INVOICES
-	function Invoice_Status()
+	function Invoice_Status($limit = 0)
 	{
 		// CREATE DB CONNECTION
+		$limitDate = [
+			0 => '1 weeks',
+			1 => '2 weeks',
+			2 => '1 month',
+			3 => '3 month',
+			4 => '6 month',
+			5 => '1 years',
+			6 => '2 years',
+		];
 		$db = new DB();
 		$Invoices = array();
 		$Description = array('Done'=>'منتقل شده','MissMatchItems'=>'حداقل اطلاعات یکی از اقلام کامل نیست !','NoCustomer'=>'مشتری در راهکاران پیدا نشد');
 		// FETCH BY STORES
-		$query = 'SELECT * FROM sg_invoices';
+		$query = 'SELECT * FROM sg_invoices WHERE date >= "'.date("Y-m-d H:i:s",strtotime("-$limitDate[$limit]")).'"';
 		$result = $db->conn->query($query);
 		if ($result->num_rows > 0)
 		{
@@ -142,9 +155,9 @@
 	}
 
 	// GET PRODUCTS FROM SG_PRODUCTS_METADATA
-	function Products_List()
+	function Products_List($limit = 100)
 	{
-		// UNITS
+      	// UNITS
 		$Products_Unit = Products_Unit();
 		// INVENTORIES
 		$Inventories = Inventories();
@@ -152,13 +165,17 @@
 		$db = new DB();
 		$Products = array();
 		// FETCH BY STORES
-		$query = 'SELECT * FROM sg_products_metadata';
+		$query = 'SELECT product_id,sg_name,CAST(sg_id as INT) AS sg_id,sg_code,sg_store_id,sg_unit,sg_tracing FROM sg_products_metadata ORDER BY sg_id DESC LIMIT 0,'.$limit;
+		if($limit < 0)
+		{
+			$query = 'SELECT product_id,sg_name,CAST(sg_id as INT) AS sg_id,sg_code,sg_store_id,sg_unit,sg_tracing FROM sg_products_metadata ORDER BY sg_id DESC';
+		}
 		$result = $db->conn->query($query);
 		if ($result->num_rows > 0)
 		{
 			while($row = $result->fetch_assoc())
 			{	
-				$StockQ = 'SELECT meta_id,meta_value FROM wp_postmeta WHERE meta_key = "_stock" AND post_id = "'.$row['product_id'].'"';
+              			$StockQ = 'SELECT meta_id,meta_value FROM wp_postmeta WHERE meta_key = "_stock" AND post_id = "'.$row['product_id'].'"';
 				$StockRes = $db->conn->query($StockQ);
 				$StockRow = $StockRes->fetch_assoc();
 				if($StockRow['meta_id'] != '')
@@ -208,25 +225,26 @@
 	function Save_Config($category,$name,$value)
 	{
 		// CREATE DB CONNECTION
-		if($name == null|| $category == null || $value == null)
-		{
-			return false;    
-		}
+        if($name == null|| $category == null || $value == null)
+        {
+            return false;    
+        }
 
 		$db = new DB();
 		$query = 'SELECT * FROM sg_config WHERE category = "'.$category.'" AND name = "'.$name.'"';
-		$result = $db->conn->query($query);
-		$row = $result->fetch_assoc();
-		if($row['name'] != '' && $row['value'] != '')
-		{
-			$query = 'UPDATE sg_config SET value = "'.$value.'" WHERE category = "'.$category.'" AND name = "'.$name.'"';
-			$db->conn->query($query);  
-		}
-		else
-		{
-			$query = 'INSERT INTO sg_config (category, name, value) VALUES ("'.$category.'","'.$name.'","'.$value.'")';
-			$db->conn->query($query); 
-		}
+      	$result = $db->conn->query($query);
+      	$row = $result->fetch_assoc();
+      	if($row['name'] != '' && $row['value'] != '')
+      	{
+       		$query = 'UPDATE sg_config SET value = "'.$value.'" WHERE category = "'.$category.'" AND name = "'.$name.'"';
+        	$db->conn->query($query);  
+      	}
+      	else
+      	{
+        	$query = 'INSERT INTO sg_config (category, name, value) VALUES ("'.$category.'","'.$name.'","'.$value.'")';
+        	$db->conn->query($query); 
+      	}
 		return true;
 	}
+
 ?>
