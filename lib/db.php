@@ -19,10 +19,10 @@
 			// DB INFO
 			$this->servername = "localhost";
 			$this->dbname = "rt_rt";
-			// $this->username = "rt_rt";
-			// $this->password = "QQE6myLYwgyX8aLEwvu3";
-			$this->username = "root";
-			$this->password = "";
+			$this->username = "rt_rt";
+			$this->password = "QQE6myLYwgyX8aLEwvu3";
+			//$this->username = "root";
+			//$this->password = "";
 
 			// Create connection
 			$this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);

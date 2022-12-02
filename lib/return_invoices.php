@@ -1,7 +1,7 @@
 <?php
 	/************************************
 		Rahkaran AND HamoonKP Integration
-		Start Date 2020-07-10
+		Start Date 2022-11-10
 	=====================================
 		Author:	Abolfazl Ghaffari
 		Mail  : agt2020@gmail.com
@@ -10,8 +10,8 @@
 	require_once ('db.php');
 	require_once ('Rahkaran.php');
 
-	// INSERT INVOICE INTO RAHKARAN
-	function Fetch_Invoices()
+	// INSERT Return INVOICE INTO RAHKARAN
+	function Fetch_Return_Invoices()
 	{
 		// CREATE DB CONNECTION
 		$db = new DB();
@@ -26,12 +26,12 @@
 			return false;
 		}
 		$inv = $inv['id'];
-	    //
-	    $ids = '';
-	    $keys = array('_variation_id' => 'p_id','_qty' => 'quantity','_line_total' => 'fee');
+	    	//
+	    	$ids = '';
+	    	$keys = array('_variation_id' => 'p_id','_qty' => 'quantity','_line_total' => 'fee');
 		$sql = "SELECT id AS order_id, date AS date_created, customer_id, shipping AS shipping_total, gross_total FROM sg_invoices WHERE sg_id IS NULL AND date >= '2022-03-21 00:00:00'";
 		//$sql = "SELECT id AS order_id, date AS date_created, customer_id, shipping AS shipping_total, gross_total FROM sg_invoices WHERE sg_id IS NULL AND (description = '' OR description IS NULL) ORDER BY date DESC LIMIT 0,10";	
-        $result = $db->conn->query($sql);
+        	$result = $db->conn->query($sql);
 		if ($result->num_rows > 0)
 		{
 			$temp_invoices = array();
@@ -42,7 +42,7 @@
 					$row['storeId'] = $inv;
 					$row['currencyId'] = 1;
 					$row['settlementPolicyId'] = 4;
-		    		$row['documentPatternId'] = 5;
+		    			$row['documentPatternId'] = 5;
 					// CUSTOMER ID
 					$sql_customer = "SELECT sg_id FROM sg_customers WHERE id ='".$row['customer_id']."'";
 					$result_customer = $db->conn->query($sql_customer);
@@ -91,14 +91,14 @@
 							}
 						}
 					}
-					Insert_Invoice($row);
+					Insert_Return_Invoice($row);
 				}
 			}
 		}
 	}
 
 	// INSERT NEW META
-	function Insert_Invoice($Invoice)
+	function Insert_Return_Invoice($Invoice)
 	{
 		if (sizeof($Invoice))
 		{
@@ -242,7 +242,7 @@
 		return $item;
 	}
 
-	function Prepare_Invoices()
+	function Prepare_Return_Invoices()
 	{
 		// CREATE DB CONNECTION
 		$db = new DB();
@@ -259,7 +259,7 @@
 		return true;
 	}
 
-	function Temp_Invoices()
+	function Temp_Return_Invoices()
 	{
 		// CREATE DB CONNECTION
 		$db = new DB();

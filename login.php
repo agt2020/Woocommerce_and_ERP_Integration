@@ -28,25 +28,53 @@ if (sizeof($_POST))
 		header('location: login.php');
 	}
 }
-
 ?>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	<title>ورود به تنظیمات راهکاران</title>
-	<link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="css/login.css">
-	<script type="text/javascript" src="js/login.js"></script>
-</head>
-<body>
-	<div class="login-page">
-		<div class="form">
-			<form class="login-form" method="POST" action="#">
-				<input id="username" name="username" type="text" placeholder="نام کاربری"/>
-				<input id="password" name="password" type="password" placeholder="رمز عبور"/>
-				<button>ورود</button>
-			</form>
-		</div>
-	</div>
-</body>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="vendor/css/fonts.css">
+        <link rel="stylesheet" href="vendor/css/style.css">
+        <link rel="stylesheet" href="vendor/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="vendor/css/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" href="vendor/css/bootstrap/style.css">
+
+        <title>مدیریت حسابداری RT</title>
+        <body>
+                <div class="content">
+                        <div class="container">
+                                <div class="row">
+                                        <div class="col-md-6">
+                                                <img src="vendor/images/vector.svg" alt="Image" class="img-fluid">
+                                        </div>
+                                        <div class="col-md-6 contents">
+                                                <div class="row justify-content-center">
+                                                        <div class="col-md-8">
+                                                                <div class="mb-4">
+                                                                        <h3>RT</h3>
+                                                                        <p class="mb-4"></p>
+                                                                </div>
+                                                                <form action="#" method="post">
+                                                                        <div class="form-group">
+                                                                                <label for="username">نام کاربری</label>
+                                                                                <input type="text" class="form-control" id="username" name="username">
+                                                                        </div>
+                                                                        <div class="form-group last mb-4">
+                                                                                <label for="password" style="direction:rtl;float:right" class="pull-right">رمز عبور</label>
+                                                                                <input type="password" class="form-control" id="password" name="password">
+                                                                        </div>
+                                                                        <input type="submit" value="ورود به RT" class="btn btn-block btn-primary" style="direction:rtl;">
+                                                                </form>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+                <script src="vendor/js/jquery-3.3.1.min.js"></script>
+                <script src="vendor/js/popper.min.js"></script>
+                <script src="vendor/js/bootstrap.min.js"></script>
+        </body>
 </html>
